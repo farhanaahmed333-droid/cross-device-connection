@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cross-device Connection</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Cross-device Connection</h1>
+    <p class="muted">Join the same room on two devices to test real-time messaging.</p>
+    <div class="status"><span id="dot"></span><span id="status">Connecting to server…</span></div>
+    <form id="joinForm">
+      <label for="room">Room code</label>
+      <div class="row">
+        <input id="room" maxlength="20" minlength="4" value="TAMANNATEST" required>
+        <button type="submit">Join room</button>
+      </div>
+    </form>
+    <p id="roomInfo" class="muted">Not in a room yet.</p>
+    <form id="messageForm">
+      <label for="message">Test message</label>
+      <div class="row">
+        <input id="message" maxlength="1000" placeholder="Type a message…" required>
+        <button type="submit">Send</button>
+      </div>
+    </form>
+    <section aria-live="polite">
+      <h2>Activity</h2>
+      <ol id="log"></ol>
+    </section>
+    <p class="warning">Prototype only: messages are not end-to-end encrypted. Do not send sensitive information.</p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

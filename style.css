@@ -1,0 +1,18 @@
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px; background: #f3f5f8; color: #1f2937; font: 16px/1.5 system-ui, sans-serif; }
+.card { max-width: 720px; margin: 4vh auto; padding: 28px; background: white; border-radius: 16px; box-shadow: 0 8px 28px #00000012; }
+h1 { margin-top: 0; }
+h2 { font-size: 1.1rem; }
+.muted { color: #667085; }
+.status { display: flex; gap: 9px; align-items: center; margin: 18px 0; }
+#dot { width: 10px; height: 10px; border-radius: 50%; background: #d97706; }
+#dot.online { background: #16a34a; }
+label { display: block; font-weight: 600; margin: 16px 0 6px; }
+.row { display: flex; gap: 8px; }
+input { min-width: 0; flex: 1; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
+button { padding: 10px 16px; border: 0; border-radius: 8px; background: #1d4ed8; color: white; font: inherit; cursor: pointer; }
+button:hover { background: #1e40af; }
+#log { padding-left: 22px; }
+#log li { margin: 7px 0; overflow-wrap: anywhere; }
+.warning { margin-top: 24px; padding: 12px; background: #fff7ed; border-radius: 8px; color: #9a3412; font-size: .9rem; }
+@media (max-width: 520px) { body { padding: 10px; } .card { padding: 18px; } .row { flex-direction: column; } }
