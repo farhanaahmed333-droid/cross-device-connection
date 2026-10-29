@@ -8,7 +8,8 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 const rooms = new Map();
 
-app.use(express.static(path.join(__dirname, "public")));
+// The website files (index.html, app.js, style.css) live in the repository root.
+app.use(express.static(__dirname));
 app.get("/health", (_req, res) => res.json({ ok: true, service: "cross-device-connection" }));
 
 function send(ws, payload) {
@@ -81,5 +82,5 @@ function broadcast(room, payload) {
 
 const port = Number(process.env.PORT || 3000);
 server.listen(port, "0.0.0.0", () => {
-  console.log(`Cross-device starter running on http://localhost:${port}`);
+  console.log(`Cross-device starter running on port ${port}`);
 });
