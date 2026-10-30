@@ -4,8 +4,12 @@
   "private": true,
   "description": "Minimal room-based real-time connection prototype for two browser devices",
   "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test"
   },
   "dependencies": {
     "express": "^4.21.2",
