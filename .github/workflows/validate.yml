@@ -22,3 +22,5 @@ jobs:
         run: node --check server.js
       - name: Check browser script syntax
         run: node --check app.js
+      - name: Run integration tests
+        run: npm test
