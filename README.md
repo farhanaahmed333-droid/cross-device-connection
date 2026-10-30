@@ -1,35 +1,35 @@
-# Cross-device Connection Starter
+# Cross-device Connection
 
-A small, GitHub-ready prototype for connecting two browser devices through a shared room code.
+A Node.js + WebSocket prototype for connecting browser devices through a shared room code.
 
-## What it does
-- Runs a small Node.js server.
-- Lets two devices join the same room using a room code.
-- Sends text messages between connected devices in real time using WebSockets.
-- Shows connection status and connected-device count.
-
-## Requirements
-- Node.js 18 or newer
-- npm
+## Features
+- Two or more browser devices can join the same room.
+- Real-time text messages over WebSockets.
+- Live connected-device count.
+- Automatic browser reconnect and room rejoin.
+- Health endpoint at `/health`.
+- Render Blueprint included in `render.yaml`.
 
 ## Run locally
+Requires Node.js 18+ and npm.
+
 ```bash
 npm install
 npm start
 ```
-Open `http://localhost:3000` on one device. To test another device on the same Wi-Fi, open `http://YOUR-COMPUTER-LAN-IP:3000` on the second device.
 
-Enter the same room code on both devices. For phones on different networks, deploy the server to a hosting provider that supports persistent WebSocket connections and use its HTTPS URL.
+Open `http://localhost:3000` on the first device. On another device on the same Wi-Fi, open `http://YOUR-COMPUTER-LAN-IP:3000`. Enter the same room code on both devices.
 
-## Important limitations
-This is a prototype, not end-to-end encrypted. Do not send passwords, private keys, or sensitive data. Room codes are not authentication. Add authentication, authorization, rate limits, and secure transport before production use.
+## Deploy on Render
+1. Connect this GitHub repository to Render.
+2. Create a new Blueprint using the repository.
+3. Render reads `render.yaml`, installs dependencies, starts `npm start`, and checks `/health`.
+4. Open the generated HTTPS URL on both devices. The browser client automatically uses secure WebSockets (WSS).
 
-## Debug checklist
-1. Confirm both devices can open the server URL.
-2. Confirm the server is running and port 3000 is reachable.
-3. Confirm both devices use the exact same room code.
-4. Check browser developer tools for WebSocket errors.
-5. Check the terminal for server errors.
+## Current safety limits
+The server enforces a 16 KB WebSocket payload limit, basic per-connection rate limits, input validation, and ping/pong heartbeats.
 
-## GitHub
-Create a new repository named `cross-device-connection`, then upload these files or push this folder with Git.
+**This remains a prototype.** Room codes are not authentication, messages are not end-to-end encrypted, and rooms are held in server memory. Do not send passwords, private keys, or sensitive data. Before production use, add authenticated room membership, secure key exchange and end-to-end encryption, abuse controls, and persistent/shared infrastructure if deploying multiple server instances.
+
+## Health check
+Visit `/health`. A healthy server returns JSON with `ok: true`.
