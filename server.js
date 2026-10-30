@@ -115,5 +115,5 @@ const heartbeat = setInterval(() => {
 wss.on("close", () => clearInterval(heartbeat));
 const port = Number(process.env.PORT || 3000);
 server.listen(port, "0.0.0.0", () => {
-  console.log(`Cross-device starter running on port ${port}`);
+  console.log(`Cross-device starter running on port ${server.address().port}`);
 });
