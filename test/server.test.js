@@ -28,8 +28,14 @@ function waitForMessage(socket, predicate, timeoutMs = 3000) {
 function connectSocket() {
   return new Promise((resolve, reject) => {
     const socket = new WebSocket(wsUrl);
-    socket.once("open", () => resolve(socket));
-    socket.once("error", reject);
+    // The server sends "connected" immediately on connection. Subscribe before
+    // waiting for "open" so the first server message cannot be missed.
+    const connected = waitForMessage(socket, (m) => m.type === "connected");
+    socket.once("open", () => resolve({ socket, connected }));
+    socket.once("error", (error) => {
+      socket.close();
+      reject(error);
+    });
   });
 }
 
@@ -78,11 +84,17 @@ test("health endpoint and frontend are served", async () => {
 });
 
 test("two devices join a room and exchange a real-time message", async () => {
-  const first = await connectSocket();
-  const second = await connectSocket();
+  const firstConnection = await connectSocket();
+  const secondConnection = await connectSocket();
+  const first = firstConnection.socket;
+  const second = secondConnection.socket;
   try {
-    const firstConnected = await waitForMessage(first, (m) => m.type === "connected");
-    const secondConnected = await waitForMessage(second, (m) => m.type === "connected");
+    // Both listeners were registered inside connectSocket, before either
+    // connection's first server message could arrive.
+    const [firstConnected, secondConnected] = await Promise.all([
+      firstConnection.connected,
+      secondConnection.connected
+    ]);
     assert.ok(firstConnected.deviceId);
     assert.ok(secondConnected.deviceId);
     assert.notEqual(firstConnected.deviceId, secondConnected.deviceId);
@@ -111,7 +123,7 @@ test("two devices join a room and exchange a real-time message", async () => {
 });
 
 test("invalid room codes are rejected without disconnecting the socket", async () => {
-  const socket = await connectSocket();
+  const { socket } = await connectSocket();
   try {
     const error = waitForMessage(socket, (m) => m.type === "error");
     socket.send(JSON.stringify({ type: "join", room: "bad" }));
